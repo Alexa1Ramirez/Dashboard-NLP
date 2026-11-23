@@ -269,14 +269,14 @@ def bert_disponible():
 
 def ejecutar(rutas, col_texto=None, col_fuente=None, etiqueta_dmo=None, idiomas=("es",),
              contaminacion=0.05, max_por_fuente=6000, usar_bert=True, dmo_positiva=True,
-             colores=(), n_boot=100):
+             colores=(), n_boot=100, paleta="cividis"):
     """Corre todo el análisis y devuelve un diccionario con PNG, tablas y ejemplos."""
     rutas = list(rutas)
     if etiqueta_dmo is None and len(rutas) >= 2:        # modo dos archivos: la DMO es el primero
         etiqueta_dmo = os.path.splitext(os.path.basename(rutas[0]))[0]
     argv = ["final1", *rutas, "--max-por-fuente", str(int(max_por_fuente)),
             "--contaminacion", str(float(contaminacion)), "--n-boot", str(int(n_boot)),
-            "--idioma", idiomas[0] if len(idiomas) == 1 else "auto"]
+            "--idioma", idiomas[0] if len(idiomas) == 1 else "auto", "--paleta", paleta]
     if col_texto:
         argv += ["--col-texto", col_texto]
     if col_fuente:
