@@ -1,6 +1,6 @@
 # Dashboard-NLP
 
-Tablero interactivo de procesamiento de lenguaje natural (PLN) que contrasta la imagen
+Tablero interactivo de Natural Language Processing (NLP) que contrasta la imagen
 que una organización de gestión de destino (DMO) proyecta en sus comunicaciones con la
 imagen que los visitantes expresan en reseñas y publicaciones de otras fuentes
 (TripAdvisor, Instagram y Reddit).
@@ -25,6 +25,7 @@ El análisis combina técnicas de minería de texto:
 3. Tópicos
 4. Imagen proyectada vs imagen percibida
 5. Precio, valor y costo
+
 
 ## Instalación (Mac / Windows)
 
