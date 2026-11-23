@@ -1,16 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-motor.py — ejecuta el pipeline de final1.py y deja todo listo para el tablero.
-
-Qué hace:
-  1. Corre los mismos pasos que main() de final1.py (limpieza, atípicos, sentimiento,
-     tópicos, DMO vs percibida, precio/valor/costo) sin imprimir nada en pantalla.
-  2. Captura las figuras de matplotlib y las convierte a PNG de alta resolución
-     (200 dpi), de modo que en el tablero se vean nítidas y no pixeleadas.
-  3. Prepara los ejemplos de texto de cada apartado.
-
-No necesita Streamlit: puede probarse desde un script (ver `ejecutar`).
-"""
 import contextlib
 import io
 import os
