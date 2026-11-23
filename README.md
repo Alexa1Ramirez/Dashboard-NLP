@@ -35,16 +35,11 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Uso
+## Uso en terminal
 ```bash
 streamlit run app.py
 ```
 
-1. Sube tus archivos en la barra lateral (un archivo con columna de fuente, o un archivo por fuente).
-2. Elige la columna de comentarios, la columna de fuente y cuál(es) fuente(s) son la DMO.
-3. Pulsa **Ejecutar análisis**. Los mapas t-SNE se calculan aparte (pestaña "Mapas").
-
-Para probar: `datos_ejemplo.csv` (columnas `comentario`, `fuente`; la DMO es `dmo`).
 
 ## Estructura
 
