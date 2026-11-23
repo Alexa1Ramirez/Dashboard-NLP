@@ -933,6 +933,16 @@ C_POS, H_POS = "#009E73", "\\\\"
 C_NEG, H_NEG = "#D55E00", "xx"
 MARCAS = ["o", "s", "^", "D", "v", "P", "X", "<", ">"]
 
+# Paleta continua de los mapas de calor (se elige con --paleta)
+PALETAS_CONTINUAS = ("viridis", "plasma", "inferno", "magma", "cividis")
+CMAP = "cividis"
+
+
+def _color_texto(valor_norm):
+    """Texto blanco u oscuro según la luminosidad de la paleta en ese valor (0-1)."""
+    r, g, b, _ = plt.get_cmap(CMAP)(float(np.clip(valor_norm, 0, 1)))
+    return "black" if (0.299 * r + 0.587 * g + 0.114 * b) > 0.5 else "white"
+
 
 def graficar_resumen_limpieza(df):
     fig, ax = plt.subplots(1, 2, figsize=(15, 5))
@@ -1637,13 +1647,13 @@ def g_validacion(normales):
     fig, ax = plt.subplots(1, 2, figsize=(14, 5.5), gridspec_kw={"width_ratios": [1, 1.2]})
     cm = pd.crosstab(sub["ref"], sub["etiqueta_modelo"]).reindex(index=[POS, NEG],
                                                                 columns=[POS, NEG], fill_value=0)
-    im = ax[0].imshow(cm.values, cmap="Blues")
+    im = ax[0].imshow(cm.values, cmap=CMAP, vmin=0, vmax=max(cm.values.max(), 1))
     for i in range(2):
         for j in range(2):
             v = cm.values[i, j]
             ax[0].text(j, i, f"{v}\n({100 * v / max(cm.values[i].sum(), 1):.0f}% de la fila)",
                        ha="center", va="center", fontsize=11,
-                       color="white" if v > cm.values.max() / 2 else "black")
+                       color=_color_texto(v / max(cm.values.max(), 1)))
     ax[0].set_xticks([0, 1], [f"Pred. {POS}", f"Pred. {NEG}"])
     ax[0].set_yticks([0, 1], [f"Estrellas: {POS}", f"Estrellas: {NEG}"])
     ax[0].set_title("Matriz de confusión: híbrido vs estrellas")
@@ -2066,12 +2076,12 @@ def g_prevalencia_fuentes(sub, res, nombre, A, pref):
     ax[0].legend(loc="upper right", fontsize=9)
 
     pct = ct.div(ct.sum(axis=1).replace(0, np.nan), axis=0).fillna(0) * 100
-    im = ax[1].imshow(pct.to_numpy(), cmap="Blues", vmin=0, aspect="auto")
+    im = ax[1].imshow(pct.to_numpy(), cmap=CMAP, vmin=0, aspect="auto")
     for i in range(len(fuentes)):
         for j in range(k):
             v = pct.iloc[i, j]
             ax[1].text(j, i, f"{v:.0f}%\n(n={int(ct.iloc[i, j])})", ha="center", va="center",
-                       fontsize=9, color="white" if v > pct.to_numpy().max() * .55 else "black")
+                       fontsize=9, color=_color_texto(v / max(pct.to_numpy().max(), 1e-9)))
     ax[1].set_xticks(range(k), [f"T{t + 1}" for t in range(k)])
     ax[1].set_yticks(range(len(fuentes)),
                      [f + (" (DMO)" if f == str(A.dmo) else "") for f in fuentes])
@@ -2976,7 +2986,8 @@ def comparar_similitud(normales, A):
     n_e = len(espacios)
     fig, axs = plt.subplots(1, n_e, figsize=(6.4 * n_e, 5.6), squeeze=False)
     for ax, (nombre_esp, M) in zip(axs[0], matrices.items()):
-        im = ax.imshow(M.values, cmap="cividis", vmin=min(0, M.values.min()), vmax=1)
+        vmin_m = min(0, M.values.min())
+        im = ax.imshow(M.values, cmap=CMAP, vmin=vmin_m, vmax=1)
         ax.set_xticks(range(len(orden)))
         ax.set_yticks(range(len(orden)))
         ax.set_xticklabels(orden, rotation=35, ha="right")
@@ -2985,7 +2996,7 @@ def comparar_similitud(normales, A):
             for j in range(len(orden)):
                 v = M.values[i, j]
                 ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=9,
-                        color="white" if v < .6 else "black")
+                        color=_color_texto((v - vmin_m) / (1 - vmin_m)))
         ax.set_title(nombre_esp)
         fig.colorbar(im, ax=ax, fraction=.046, pad=.04, label="Similitud coseno")
     fig.suptitle("Similitud entre fuentes (centroides)", fontsize=13)
@@ -3771,7 +3782,13 @@ def argumentos():
                    help="máximo de puntos en el scatter interactivo (0 = todos)")
     p.add_argument("--ocultar-graficas-previas", action="store_true",
                    help="no mostrar las gráficas de limpieza, atípicos y n-gramas")
-    return p.parse_args()
+    p.add_argument("--paleta", default="cividis", choices=PALETAS_CONTINUAS,
+                   help="paleta continua de los mapas de calor: viridis, plasma, inferno, "
+                        "magma o cividis (por defecto cividis)")
+    A = p.parse_args()
+    global CMAP
+    CMAP = A.paleta
+    return A
 
 
 def main():
