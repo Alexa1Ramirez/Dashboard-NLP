@@ -28,7 +28,6 @@ El análisis combina técnicas de minería de texto:
 
 
 ## Instalación (Mac / Windows)
-
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
@@ -36,7 +35,6 @@ pip install -r requirements.txt
 ```
 
 # Uso
-
 ```bash
 streamlit run tablero.py -- comentarios.csv fuente dmo es,en "Imagen proyectada vs Imagen percibida" --col-texto comentario --max-por-fuente 20000
 ```
