@@ -221,3 +221,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+comentarios.csv
+data/*
+!data/datos_ejemplo.csv
