@@ -68,3 +68,7 @@ streamlit run tablero.py -- comentarios.csv fuente dmo es,en "Imagen proyectada 
 | `inferno` | Del negro al amarillo, pasando por rojo. |
 | `magma` | Del negro al blanco, pasando por morado y rosa. |
 Los colores de los grupos son fijos (paleta **Okabe-Ito**, apta para daltonismo) y además se distinguen por trama o forma, no solo por color.
+
+## Contacto
+- ar402482@gmail.com
+  
