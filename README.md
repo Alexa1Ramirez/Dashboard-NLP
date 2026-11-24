@@ -71,4 +71,5 @@ Los colores de los grupos son fijos (paleta **Okabe-Ito**, apta para daltonismo)
 
 ## Contacto
 - ar402482@gmail.com
+- a.ramirezramirez6@ugto.mx 
   
